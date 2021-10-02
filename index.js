@@ -12,10 +12,12 @@ Tri contenu bouton quand tape (youtube)
 ATTENTION ! Tri des cartes: 2 algo à faire*/
 
 import Header from "./js/components/Header.js";
+import Search from "./js/components/Search.js";
 
 class Index {
 	constructor(){
 		this.displayHeader();
+		this.displaySearch();
 	}
 
 	displayHeader(){
@@ -23,6 +25,13 @@ class Index {
 		const header = new Header();
 		headerContainer.innerHTML += header.render();
 	}
+
+	displaySearch(){
+		const mainContainer = document.querySelector(".mainContainer");
+		const search = new Search();
+		mainContainer.innerHTML += search.render();
+	}
+
 }
 
 new Index();
