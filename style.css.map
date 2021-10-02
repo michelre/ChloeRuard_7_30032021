@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":[],"names":[],"mappings":"","file":"style.css"}
+{"version":3,"sourceRoot":"","sources":["sass/base/_typography.scss","sass/base/_reset.scss","sass/base/_wrapper.scss","sass/components/_header.scss"],"names":[],"mappings":"AAAQ,ufCaP,SACA,UACA,SACA,eACA,aACA,wBAGD,8EAEC,cAED,KACC,cAED,MACC,gBAED,aACC,YAED,oDAEC,WACA,aAED,MACC,yBACA,iBAED,EACC,qBAED,OACC,gBC/CD,SACA,8CACA,gBACA,sBACA,iBACA,YCLA,iBACC,aACA,eACA,uBACA,iBAGD,cACC,gBACA,mBAGD,YACC,WACA","file":"style.css"}

@@ -1,0 +1,10 @@
+@mixin responsive($device) {
+	@media screen and (min-width: map-get($breakpoints, $device)) {
+		@content;
+	}
+}
+@mixin img-max {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
