@@ -1,0 +1,97 @@
+.cardsContainer {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+	gap: 50px;
+	margin-top: 30px;
+	justify-items: center;
+}
+
+.recipe {
+	&__card {
+		width: 380px;
+		height: 365px;
+		background-color: $primary-background-color;
+		border-radius: $radius;
+		overflow: hidden;
+	}
+	&__picture {
+		height: 180px;
+		background-color: $secondary-background-color;
+		border-radius: $radius $radius 0 0;
+	}
+	&__info {
+		margin: 20px;
+		height: 145px;
+		overflow: hidden;
+	}
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		font-size: 18px;
+		gap: 20px;
+	}
+	&__name {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	&__time {
+		display: flex;
+		gap: 10px;
+		white-space: nowrap;
+	}
+	&__body {
+		display: flex;
+		gap: 15px;
+		font-size: 12px;
+		margin-top: 20px;
+	}
+	&__description {
+		width: 50%;
+		text-overflow: ellipsis;
+		line-height: 12px;
+		height: 100%;
+		overflow: hidden;
+		-webkit-line-clamp: 6;
+		-webkit-box-orient: vertical;
+		display: -webkit-box;
+	}
+	&__ingredients {
+		line-height: 15px;
+		width: 50%;
+	}
+	&__ingredient {
+		font-weight: 400;
+		//	display: flex;
+		// 	justify-content: flex-start;
+		// gap: 5px;
+	}
+}
+
+.ingredient {
+	&__name {
+		font-weight: 700;
+		// 	white-space: nowrap;
+		// overflow: hidden;
+		// text-overflow: ellipsis;
+	}
+	&__quantity {
+		font-weight: 400;
+		// white-space: nowrap;
+	}
+	&__unit {
+		font-weight: 400;
+		// 	white-space: nowrap;
+		// overflow: hidden;
+		// text-overflow: ellipsis;
+	}
+}
+
+.time {
+	&__number {
+		font-weight: 700;
+	}
+	&__icon {
+		max-width: 20px;
+	}
+}

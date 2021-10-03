@@ -10,10 +10,14 @@
 		background-color: transparent;
 		font-family: inherit;
 		font-weight: 400;
-		font-size: 1.5rem;
-		opacity: 25%;
+		font-size: 18px;
 		padding-left: 20px;
 		width: 100%;
+		height: 100%;
+		text-overflow: ellipsis;
+		&::placeholder{
+			opacity: 25%;
+		}
 	}
 	&__submit{
 		min-width: 35px;

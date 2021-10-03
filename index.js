@@ -13,11 +13,15 @@ ATTENTION ! Tri des cartes: 2 algo à faire*/
 
 import Header from "./js/components/Header.js";
 import Search from "./js/components/Search.js";
+import RecipeCard from "./js/components/RecipeCard.js";
+import recipes from "./recipes.js";
 
 class Index {
 	constructor(){
+		this.recipes = recipes;
 		this.displayHeader();
 		this.displaySearch();
+		this.displayRecipeCard(recipes);
 	}
 
 	displayHeader(){
@@ -27,11 +31,20 @@ class Index {
 	}
 
 	displaySearch(){
-		const mainContainer = document.querySelector(".mainContainer");
+		const searchContainer = document.querySelector(".searchContainer");
 		const search = new Search();
-		mainContainer.innerHTML += search.render();
+		searchContainer.innerHTML += search.render();
 	}
 
+	displayRecipeCard(recipes){
+		const cardsContainer = document.querySelector(".cardsContainer");
+		const cards = recipes.map((recipe) => {
+			const recipeCard = new RecipeCard(recipe);
+			return recipeCard.render();
+		});
+		//for each recipe, create a new card (array), then .join("") to string
+		cardsContainer.innerHTML = cards.join("");
+	}
 }
 
 new Index();
