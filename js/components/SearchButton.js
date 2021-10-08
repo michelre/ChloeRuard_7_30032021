@@ -9,7 +9,6 @@ export default class SearchButton {
 	workingSearchButton() {
 		//for ingredients
 		document.addEventListener("click", (e) => {
-			console.log(e.target.dataset);
 			if (e.target.dataset.trigger === "button-ingredients" || e.target.dataset.trigger === "buttonIcon-ingredients") {
 				this.openList("ingredients");
 			}
@@ -20,7 +19,6 @@ export default class SearchButton {
 
 		//for appliance
 		document.addEventListener("click", (e) => {
-			console.log(e.target.dataset);
 			if (e.target.dataset.trigger === "button-appliance" || e.target.dataset.trigger === "buttonIcon-appliance") {
 				this.openList("appliance");
 			}
