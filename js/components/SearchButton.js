@@ -83,8 +83,8 @@ export default class SearchButton {
 			return this.setIngredients
 				.map((ingredient) => {
 					return `
-					<li class="searchButton__result">
-						<span class="result__name">${ingredient}</span>
+					<li class="searchButton__result" data-trigger="result" data-type="${nameEN}">
+						${ingredient}
 					</li>`;
 				})
 				.join("");
@@ -93,8 +93,8 @@ export default class SearchButton {
 			return this.setAppliances
 				.map((appliance) => {
 					return `
-					<li class="searchButton__result">
-						<span class="result__name">${appliance}</span>
+					<li class="searchButton__result" data-trigger="result" data-type="${nameEN}">
+						${appliance}
 					</li>`;
 				})
 				.join("");
@@ -103,8 +103,8 @@ export default class SearchButton {
 			return this.setUstensils
 				.map((ustensil) => {
 					return `
-					<li class="searchButton__result">
-						<span class="result__name">${ustensil}</span>
+					<li class="searchButton__result" data-trigger="result" data-type="${nameEN}">
+						${ustensil}
 					</li>`;
 				})
 				.join("");

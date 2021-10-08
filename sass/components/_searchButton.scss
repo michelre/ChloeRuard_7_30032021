@@ -96,21 +96,14 @@
 		}
 	}
 	&__result {
-		height: 30px;
 		cursor: pointer;
-		display: flex;
-		align-items: center;
+		padding: 8px;
+		text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
 		&:hover {
 			background-color: white;
 			color: black;
 		}
-	}
-}
-
-.result {
-	&__name {
-		text-overflow: ellipsis;
-		overflow: hidden;
-		white-space: nowrap;
 	}
 }

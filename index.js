@@ -15,6 +15,7 @@ import Header from "./js/components/Header.js";
 import Search from "./js/components/Search.js";
 import RecipeCard from "./js/components/RecipeCard.js";
 import SearchButton from "./js/components/SearchButton.js";
+import Tag from "./js/components/Tag.js";
 import recipes from "./recipes.js";
 
 class Index {
@@ -26,6 +27,8 @@ class Index {
 		this.displayIngredientButton(recipes);
 		this.displayApplianceButton(recipes);
 		this.displayUstensilsButton(recipes);
+		this.displayTag();
+		this.removeTag();
 	}
 
 	displayHeader() {
@@ -67,6 +70,29 @@ class Index {
 		const searchButtonContainer = document.querySelector(".searchButtonContainer");
 		const searchButton = new SearchButton(recipes);
 		searchButtonContainer.innerHTML += searchButton.render("Ustensiles", "ustensils");
+	}
+
+	displayTag() {
+		const tagContainer = document.querySelector(".tagContainer");
+		document.addEventListener("click", (e) => {
+			if (e.target.dataset.trigger === "result") {
+				const type = e.target.dataset.type;
+				const content = e.target.textContent;
+				const tag = new Tag(type, content);
+				tagContainer.innerHTML += tag.render();
+			}
+		});
+	}
+
+	removeTag() {
+		document.addEventListener("click", (e) => {
+			if (e.target.dataset.trigger === "tag") {
+				e.target.remove();
+			}
+			if (e.target.dataset.trigger === "tagDelete" || e.target.dataset.trigger === "tagContent") {
+				e.target.parentNode.remove();
+			}
+		});
 	}
 }
 

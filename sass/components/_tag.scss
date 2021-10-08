@@ -1,0 +1,32 @@
+.tagContainer {
+	display: flex;
+	justify-content: flex-start;
+	gap: 20px;
+	margin-top: 20px;
+	width: inherit;
+	//flex-wrap: wrap;
+}
+
+.tag{
+	border-radius: $radius;
+	max-height: 40px;
+	font-size: 14px;
+	font-weight: 700;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 15px;
+	padding: 10px 20px 10px 20px ;
+	cursor: pointer;
+
+	&-ingredients {
+		background-color: $primary-color;
+	}
+	&-appliance {
+		background-color: $secondary-color;
+	}
+	&-ustensils {
+		background-color: $tertiary-color;
+	}
+}
