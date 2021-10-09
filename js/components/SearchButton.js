@@ -36,6 +36,38 @@ export default class SearchButton {
 				this.closeList("ustensils");
 			}
 		});
+
+		this.searchFunction();
+	}
+
+	searchFunction() {
+		const buttonInput = document.querySelectorAll(".searchButton__input");
+		buttonInput.forEach((input) => {
+			input.addEventListener("keyup", (e) => {
+				const searchString = e.target.value.toLowerCase();
+				if (e.target.name == "ingredients") {
+					console.log(searchString);
+					const filteredResults = this.setIngredients.filter((ingredient) => {
+						return ingredient.toLowerCase().includes(searchString);
+					});
+					console.log(filteredResults);
+				}
+				if (e.target.name == "appliance") {
+					console.log(searchString);
+					const filteredResults = this.setAppliances.filter((appliance) => {
+						return appliance.toLowerCase().includes(searchString);
+					});
+					console.log(filteredResults);
+				}
+				if (e.target.name == "ustensils") {
+					console.log(searchString);
+					const filteredResults = this.setUstensils.filter((ustensil) => {
+						return ustensil.toLowerCase().includes(searchString);
+					});
+					console.log(filteredResults);
+				}
+			});
+		});
 	}
 
 	openList(nameEN) {
@@ -121,7 +153,7 @@ export default class SearchButton {
 			</button>
 			<div class="searchButton__search searchButton__search-${nameEN}" data-trigger="list-${nameEN}">
 				<div class="searchButton__inputContainer">
-					<input type="search" class="searchButton__input" placeholder="Rechercher un ${nameLowerCase}" name="${nameLowerCase}">
+					<input type="search" class="searchButton__input" placeholder="Rechercher un ${nameLowerCase}" name="${nameEN}">
 					<img src="./img/arrow_icon.svg" class="searchButton__icon" alt="" data-trigger="listIcon-${nameEN}">
 				</div>
 				<ul class="searchButton__results">${this.renderResult(nameEN)}</ul>

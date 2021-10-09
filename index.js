@@ -24,9 +24,7 @@ class Index {
 		this.displayHeader();
 		this.displaySearch();
 		this.displayRecipeCard(recipes);
-		this.displayIngredientButton(recipes);
-		this.displayApplianceButton(recipes);
-		this.displayUstensilsButton(recipes);
+		this.displayButtons(recipes);
 		this.displayTag();
 		this.removeTag();
 	}
@@ -53,23 +51,13 @@ class Index {
 		cardsContainer.innerHTML = cards.join("");
 	}
 
-	displayIngredientButton(recipes) {
+	displayButtons(recipes) {
 		const searchButtonContainer = document.querySelector(".searchButtonContainer");
 		const searchButton = new SearchButton(recipes);
 		searchButtonContainer.innerHTML += searchButton.render("Ingredients", "ingredients");
-	}
-
-	displayApplianceButton(recipes) {
-		const searchButtonContainer = document.querySelector(".searchButtonContainer");
-		const searchButton = new SearchButton(recipes);
-		searchButton.workingSearchButton();
 		searchButtonContainer.innerHTML += searchButton.render("Appareil ", "appliance");
-	}
-
-	displayUstensilsButton(recipes) {
-		const searchButtonContainer = document.querySelector(".searchButtonContainer");
-		const searchButton = new SearchButton(recipes);
 		searchButtonContainer.innerHTML += searchButton.render("Ustensiles", "ustensils");
+		searchButton.workingSearchButton();
 	}
 
 	displayTag() {
@@ -93,6 +81,10 @@ class Index {
 				e.target.parentNode.remove();
 			}
 		});
+	}
+
+	sortRecipeTag(){
+
 	}
 }
 
