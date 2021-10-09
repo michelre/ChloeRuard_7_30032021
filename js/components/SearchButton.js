@@ -46,32 +46,34 @@ export default class SearchButton {
 			input.addEventListener("keyup", (e) => {
 				const searchString = e.target.value.toLowerCase();
 				if (e.target.name == "ingredients") {
-					const filteredResults = this.setIngredients.filter((ingredient) => {
-						return ingredient.toLowerCase().includes(searchString);
+					const liste = document.querySelectorAll(".searchButton__result-ingredients");
+					liste.forEach((ingredient)=>{
+						if (ingredient.textContent.toLowerCase().includes(searchString)){
+							ingredient.style.display = "block";
+						} else {
+							ingredient.style.display = "none";
+						}
 					});
-					this.setIngredients = filteredResults;
-					const searchButtonContainer = document.querySelector(".searchButton__results-ingredients");
-					searchButtonContainer.innerHTML = this.renderResult("ingredients");
 				}
 				if (e.target.name == "appliance") {
-					console.log(searchString);
-					const filteredResults = this.setAppliances.filter((appliance) => {
-						return appliance.toLowerCase().includes(searchString);
+					const liste = document.querySelectorAll(".searchButton__result-appliance");
+					liste.forEach((ingredient)=>{
+						if (ingredient.textContent.toLowerCase().includes(searchString)){
+							ingredient.style.display = "block";
+						} else {
+							ingredient.style.display = "none";
+						}
 					});
-					console.log(filteredResults);
-					this.setAppliances = filteredResults;
-					const searchButtonContainer = document.querySelector(".searchButton__results-appliance");
-					searchButtonContainer.innerHTML = this.renderResult("appliance");
 				}
 				if (e.target.name == "ustensils") {
-					console.log(searchString);
-					const filteredResults = this.setUstensils.filter((ustensil) => {
-						return ustensil.toLowerCase().includes(searchString);
+					const liste = document.querySelectorAll(".searchButton__result-ustensils");
+					liste.forEach((ingredient)=>{
+						if (ingredient.textContent.toLowerCase().includes(searchString)){
+							ingredient.style.display = "block";
+						} else {
+							ingredient.style.display = "none";
+						}
 					});
-					console.log(filteredResults);
-					this.setUstensils = filteredResults;
-					const searchButtonContainer = document.querySelector(".searchButton__results-ustensils");
-					searchButtonContainer.innerHTML = this.renderResult("ustensils");
 				}
 			});
 		});
@@ -92,15 +94,17 @@ export default class SearchButton {
 	}
 
 	uniqueArrayUstensil() {
-		const arrayUstenstils = this.data.map((recipe) => {
+		const arrayUstensils = this.data.map((recipe) => {
 			return recipe.ustensils;
 		});
-		this.setUstensils = [...new Set(arrayUstenstils.flat())];
+		const arrayUstensilsLw = arrayUstensils.flat().map((ustensil)=>ustensil.toLowerCase());
+		this.setUstensils = [...new Set(arrayUstensilsLw)];
+		console.log(this.setUstensils);
 	}
 
 	uniqueArrayAppliance() {
 		const arrayAppliances = this.data.map((recipe) => {
-			return recipe.appliance;
+			return recipe.appliance.toLowerCase();
 		});
 		this.setAppliances = [...new Set(arrayAppliances)];
 	}
@@ -111,19 +115,20 @@ export default class SearchButton {
 				return ingredient.ingredient;
 			});
 		});
-		this.setIngredients = [...new Set(arrayIngredients.flat())];
+		const arrayIngredientsLw = arrayIngredients.flat().map((ingredient)=>ingredient.toLowerCase());
+		this.setIngredients = [...new Set(arrayIngredientsLw)];
+		console.log(this.setIngredients);
 	}
 
 	renderResult(nameEN) {
-		this.setIngredients;
-		this.setAppliances;
-		this.setUstensils;
-		console.log(this.setIngredients);
+		this.uniqueArrayUstensil();
+		this.uniqueArrayAppliance();
+		this.uniqueArrayIngredient();
 		if (nameEN == "ingredients") {
 			return this.setIngredients
 				.map((ingredient) => {
 					return `
-					<li class="searchButton__result" data-trigger="result" data-type="${nameEN}">
+					<li class="searchButton__result searchButton__result-${nameEN}" data-trigger="result" data-type="${nameEN}">
 						${ingredient}
 					</li>`;
 				})
@@ -133,7 +138,7 @@ export default class SearchButton {
 			return this.setAppliances
 				.map((appliance) => {
 					return `
-					<li class="searchButton__result" data-trigger="result" data-type="${nameEN}">
+					<li class="searchButton__result searchButton__result-${nameEN}" data-trigger="result" data-type="${nameEN}">
 						${appliance}
 					</li>`;
 				})
@@ -143,7 +148,7 @@ export default class SearchButton {
 			return this.setUstensils
 				.map((ustensil) => {
 					return `
-					<li class="searchButton__result" data-trigger="result" data-type="${nameEN}">
+					<li class="searchButton__result searchButton__result-${nameEN}" data-trigger="result" data-type="${nameEN}">
 						${ustensil}
 					</li>`;
 				})
@@ -152,9 +157,6 @@ export default class SearchButton {
 	}
 
 	render(name, nameEN) {
-		this.uniqueArrayUstensil();
-		this.uniqueArrayAppliance();
-		this.uniqueArrayIngredient();
 		const nameLowerCase = name.toLowerCase().slice(0, -1);
 		//met le nom du bouton en minuscule et enlève le dernier caractère pour mettre le mot au singulier
 		return `

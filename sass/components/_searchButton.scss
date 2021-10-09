@@ -96,11 +96,12 @@
 		}
 	}
 	&__result {
+		display: block;
 		cursor: pointer;
 		padding: 8px;
 		text-overflow: ellipsis;
-overflow: hidden;
-white-space: nowrap;
+		overflow: hidden;
+		white-space: nowrap;
 		&:hover {
 			background-color: white;
 			color: black;
