@@ -46,11 +46,12 @@ export default class SearchButton {
 			input.addEventListener("keyup", (e) => {
 				const searchString = e.target.value.toLowerCase();
 				if (e.target.name == "ingredients") {
-					console.log(searchString);
 					const filteredResults = this.setIngredients.filter((ingredient) => {
 						return ingredient.toLowerCase().includes(searchString);
 					});
-					console.log(filteredResults);
+					this.setIngredients = filteredResults;
+					const searchButtonContainer = document.querySelector(".searchButton__results-ingredients");
+					searchButtonContainer.innerHTML = this.renderResult("ingredients");
 				}
 				if (e.target.name == "appliance") {
 					console.log(searchString);
@@ -58,6 +59,9 @@ export default class SearchButton {
 						return appliance.toLowerCase().includes(searchString);
 					});
 					console.log(filteredResults);
+					this.setAppliances = filteredResults;
+					const searchButtonContainer = document.querySelector(".searchButton__results-appliance");
+					searchButtonContainer.innerHTML = this.renderResult("appliance");
 				}
 				if (e.target.name == "ustensils") {
 					console.log(searchString);
@@ -65,6 +69,9 @@ export default class SearchButton {
 						return ustensil.toLowerCase().includes(searchString);
 					});
 					console.log(filteredResults);
+					this.setUstensils = filteredResults;
+					const searchButtonContainer = document.querySelector(".searchButton__results-ustensils");
+					searchButtonContainer.innerHTML = this.renderResult("ustensils");
 				}
 			});
 		});
@@ -88,14 +95,14 @@ export default class SearchButton {
 		const arrayUstenstils = this.data.map((recipe) => {
 			return recipe.ustensils;
 		});
-		return (this.setUstensils = [...new Set(arrayUstenstils.flat())]);
+		this.setUstensils = [...new Set(arrayUstenstils.flat())];
 	}
 
 	uniqueArrayAppliance() {
 		const arrayAppliances = this.data.map((recipe) => {
 			return recipe.appliance;
 		});
-		return (this.setAppliances = [...new Set(arrayAppliances)]);
+		this.setAppliances = [...new Set(arrayAppliances)];
 	}
 
 	uniqueArrayIngredient() {
@@ -104,13 +111,14 @@ export default class SearchButton {
 				return ingredient.ingredient;
 			});
 		});
-		return (this.setIngredients = [...new Set(arrayIngredients.flat())]);
+		this.setIngredients = [...new Set(arrayIngredients.flat())];
 	}
 
 	renderResult(nameEN) {
-		this.uniqueArrayUstensil();
-		this.uniqueArrayAppliance();
-		this.uniqueArrayIngredient();
+		this.setIngredients;
+		this.setAppliances;
+		this.setUstensils;
+		console.log(this.setIngredients);
 		if (nameEN == "ingredients") {
 			return this.setIngredients
 				.map((ingredient) => {
@@ -144,6 +152,9 @@ export default class SearchButton {
 	}
 
 	render(name, nameEN) {
+		this.uniqueArrayUstensil();
+		this.uniqueArrayAppliance();
+		this.uniqueArrayIngredient();
 		const nameLowerCase = name.toLowerCase().slice(0, -1);
 		//met le nom du bouton en minuscule et enlève le dernier caractère pour mettre le mot au singulier
 		return `
@@ -156,7 +167,7 @@ export default class SearchButton {
 					<input type="search" class="searchButton__input" placeholder="Rechercher un ${nameLowerCase}" name="${nameEN}">
 					<img src="./img/arrow_icon.svg" class="searchButton__icon" alt="" data-trigger="listIcon-${nameEN}">
 				</div>
-				<ul class="searchButton__results">${this.renderResult(nameEN)}</ul>
+				<ul class="searchButton__results searchButton__results-${nameEN}">${this.renderResult(nameEN)}</ul>
 			</div>`;
 	}
 }
