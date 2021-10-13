@@ -9,8 +9,8 @@
 
 .searchButton {
 	border-radius: $radius;
-	max-width: 170px;
-	max-height: 70px;
+	min-width: 170px;
+	min-height: 70px;
 	border: none;
 	font-size: 18px;
 	font-weight: 700;
@@ -73,7 +73,12 @@
 	}
 	&__icon {
 		min-width: 16px;
+		padding-left: 20px;
+	}
+	&__icon-Reverse{
+		min-width: 16px;
 		padding: 30px;
+		rotate: 180deg;
 	}
 	&__results {
 		position: absolute;

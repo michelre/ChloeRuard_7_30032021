@@ -4,31 +4,30 @@ export default class SearchButton {
 		this.ustensils = data.ustensils;
 		this.appliance = data.appliance;
 		this.ingredients = data.ingredients;
+		this.uniqueArrayUstensil();
+		this.uniqueArrayAppliance();
+		this.uniqueArrayIngredient();
 	}
 
+	//events handler
+
 	workingSearchButton() {
-		//for ingredients
 		document.addEventListener("click", (e) => {
+			//for ingredients
 			if (e.target.dataset.trigger === "button-ingredients" || e.target.dataset.trigger === "buttonIcon-ingredients") {
 				this.openList("ingredients");
 			}
 			if (e.target.dataset.trigger === "listIcon-ingredients") {
 				this.closeList("ingredients");
 			}
-		});
-
-		//for appliance
-		document.addEventListener("click", (e) => {
+			//for appliance
 			if (e.target.dataset.trigger === "button-appliance" || e.target.dataset.trigger === "buttonIcon-appliance") {
 				this.openList("appliance");
 			}
 			if (e.target.dataset.trigger === "listIcon-appliance") {
 				this.closeList("appliance");
 			}
-		});
-
-		//for ustensils
-		document.addEventListener("click", (e) => {
+			//for ustensils
 			if (e.target.dataset.trigger === "button-ustensils" || e.target.dataset.trigger === "buttonIcon-ustensils") {
 				this.openList("ustensils");
 			}
@@ -40,44 +39,37 @@ export default class SearchButton {
 		this.searchFunction();
 	}
 
+	//display the right results according to what is searched with input
 	searchFunction() {
 		const buttonInput = document.querySelectorAll(".searchButton__input");
 		buttonInput.forEach((input) => {
 			input.addEventListener("keyup", (e) => {
-				const searchString = e.target.value.toLowerCase();
+				this.searchString = e.target.value.toLowerCase();
 				if (e.target.name == "ingredients") {
-					const liste = document.querySelectorAll(".searchButton__result-ingredients");
-					liste.forEach((ingredient)=>{
-						if (ingredient.textContent.toLowerCase().includes(searchString)){
-							ingredient.style.display = "block";
-						} else {
-							ingredient.style.display = "none";
-						}
-					});
+					this.displayResults("ingredients");
 				}
 				if (e.target.name == "appliance") {
-					const liste = document.querySelectorAll(".searchButton__result-appliance");
-					liste.forEach((appliance)=>{
-						if (appliance.textContent.toLowerCase().includes(searchString)){
-							appliance.style.display = "block";
-						} else {
-							appliance.style.display = "none";
-						}
-					});
+					this.displayResults("appliance");
 				}
 				if (e.target.name == "ustensils") {
-					const liste = document.querySelectorAll(".searchButton__result-ustensils");
-					liste.forEach((ustensil)=>{
-						if (ustensil.textContent.toLowerCase().includes(searchString)){
-							ustensil.style.display = "block";
-						} else {
-							ustensil.style.display = "none";
-						}
-					});
+					this.displayResults("ustensils");
 				}
 			});
 		});
 	}
+
+	displayResults(element) {
+		const list = document.querySelectorAll(`.searchButton__result-${element}`);
+		list.forEach((result) => {
+			if (result.textContent.toLowerCase().includes(this.searchString)) {
+				result.style.display = "block";
+			} else {
+				result.style.display = "none";
+			}
+		});
+	}
+
+	//open or close list
 
 	openList(nameEN) {
 		const searchButton = document.querySelector(`.searchButton-${nameEN}`);
@@ -93,19 +85,21 @@ export default class SearchButton {
 		searchList.style.display = "none";
 	}
 
+	//create unique array from data
+
 	uniqueArrayUstensil() {
 		const arrayUstensils = this.data.map((recipe) => {
 			return recipe.ustensils;
 		});
-		const arrayUstensilsLw = arrayUstensils.flat().map((ustensil)=>ustensil.toLowerCase());
-		this.setUstensils = [...new Set(arrayUstensilsLw)];
+		const arrayUstensilsLw = arrayUstensils.flat().map((ustensil) => ustensil.toLowerCase());
+		return (this.setUstensils = [...new Set(arrayUstensilsLw)]);
 	}
 
 	uniqueArrayAppliance() {
 		const arrayAppliances = this.data.map((recipe) => {
 			return recipe.appliance.toLowerCase();
 		});
-		this.setAppliances = [...new Set(arrayAppliances)];
+		return (this.setAppliances = [...new Set(arrayAppliances)]);
 	}
 
 	uniqueArrayIngredient() {
@@ -114,14 +108,13 @@ export default class SearchButton {
 				return ingredient.ingredient;
 			});
 		});
-		const arrayIngredientsLw = arrayIngredients.flat().map((ingredient)=>ingredient.toLowerCase());
-		this.setIngredients = [...new Set(arrayIngredientsLw)];
+		const arrayIngredientsLw = arrayIngredients.flat().map((ingredient) => ingredient.toLowerCase());
+		return (this.setIngredients = [...new Set(arrayIngredientsLw)]);
 	}
 
+	//render
+
 	renderResult(nameEN) {
-		this.uniqueArrayUstensil();
-		this.uniqueArrayAppliance();
-		this.uniqueArrayIngredient();
 		if (nameEN == "ingredients") {
 			return this.setIngredients
 				.map((ingredient) => {
@@ -165,7 +158,7 @@ export default class SearchButton {
 			<div class="searchButton__search searchButton__search-${nameEN}" data-trigger="list-${nameEN}">
 				<div class="searchButton__inputContainer">
 					<input type="search" class="searchButton__input" placeholder="Rechercher un ${nameLowerCase}" name="${nameEN}">
-					<img src="./img/arrow_icon.svg" class="searchButton__icon" alt="" data-trigger="listIcon-${nameEN}">
+					<img src="./img/arrow_icon.svg" class="searchButton__icon-Reverse" alt="" data-trigger="listIcon-${nameEN}">
 				</div>
 				<ul class="searchButton__results searchButton__results-${nameEN}">${this.renderResult(nameEN)}</ul>
 			</div>`;
