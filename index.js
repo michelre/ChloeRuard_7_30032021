@@ -1,14 +1,5 @@
-/* bouton: input qui disparait + div qui contient plein de div en flex
-cartes plats: image vide + div titre + temps + div liste (plein de div) + instruction
-Champ de recherche avec icon bouton
-header
-tag avec bouton de suppression
-Afficher toutes les cartes
-Afficher tout les boutons avec toutes les options 
-Créer un tag quand option sélectionnée
+/*
 Créer un tag quand tape quelque chose dans la barre de recherche
-Supprimer un tag quand clique croix
-Tri contenu bouton quand tape (youtube)
 ATTENTION ! Tri des cartes: 2 algo à faire*/
 
 import Header from "./js/components/Header.js";
@@ -23,8 +14,8 @@ class Index {
 		this.recipes = recipes;
 		this.displayHeader();
 		this.displaySearch();
-		this.displayRecipeCard(recipes);
-		this.displayButtons(recipes);
+		this.displayRecipeCard(this.recipes);
+		this.displayButtons(this.recipes);
 		this.displayTag();
 		this.removeTag();
 	}
@@ -68,6 +59,9 @@ class Index {
 				const content = e.target.textContent;
 				const tag = new Tag(type, content);
 				tagContainer.innerHTML += tag.render();
+				e.target.style.display = "none";
+				//if <li> clicked and transformed to tag, remove the <li> selected from the list of results (= a tag is unique)
+				this.sortRecipeTag();
 			}
 		});
 	}
@@ -76,15 +70,53 @@ class Index {
 		document.addEventListener("click", (e) => {
 			if (e.target.dataset.trigger === "tag") {
 				e.target.remove();
+
+				const content = e.target.dataset.id;
+				const results = document.querySelectorAll(".searchButton__result");
+				results.forEach((result) => {
+					if (result.textContent === content) {
+						result.style.display = "block";
+					}
+				});
+				//if tag deleted, display back the corresponsing <li> result in the list of results
 			}
 			if (e.target.dataset.trigger === "tagDelete" || e.target.dataset.trigger === "tagContent") {
 				e.target.parentNode.remove();
+
+				const content = e.target.dataset.id;
+				const results = document.querySelectorAll(".searchButton__result");
+				results.forEach((result) => {
+					if (result.textContent === content) {
+						result.style.display = "block";
+					}
+				});
+				//if tag deleted, display back the corresponsing <li> result in the list of results
+
 			}
 		});
 	}
 
-	sortRecipeTag(){
-
+	sortRecipeTag() {
+		const tagIngredients = [...document.querySelectorAll(".tag-ingredients")];
+		console.log(tagIngredients);
+		tagIngredients.forEach((tag) => {
+			console.log(tag.dataset.id);
+		});
+		const tagAppliance = document.querySelectorAll(".tag-appliance");
+		tagAppliance.forEach((tag) => {
+			console.log(tag.dataset.id);
+		});
+		const tagUstensils = document.querySelectorAll(".tag-ustensils");
+		tagUstensils.forEach((tag) => {
+			console.log(tag.dataset.id);
+		});
+		//
+		//let filteredRecipes = this.recipes.filter((recipe)=>
+		// { recipe.
+		//
+		// })
+		//this.displayRecipeCard(filteredRecipes);
+		//this.displayButtons(filteredRecipes);
 	}
 }
 

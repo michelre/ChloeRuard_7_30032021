@@ -57,21 +57,21 @@ export default class SearchButton {
 				}
 				if (e.target.name == "appliance") {
 					const liste = document.querySelectorAll(".searchButton__result-appliance");
-					liste.forEach((ingredient)=>{
-						if (ingredient.textContent.toLowerCase().includes(searchString)){
-							ingredient.style.display = "block";
+					liste.forEach((appliance)=>{
+						if (appliance.textContent.toLowerCase().includes(searchString)){
+							appliance.style.display = "block";
 						} else {
-							ingredient.style.display = "none";
+							appliance.style.display = "none";
 						}
 					});
 				}
 				if (e.target.name == "ustensils") {
 					const liste = document.querySelectorAll(".searchButton__result-ustensils");
-					liste.forEach((ingredient)=>{
-						if (ingredient.textContent.toLowerCase().includes(searchString)){
-							ingredient.style.display = "block";
+					liste.forEach((ustensil)=>{
+						if (ustensil.textContent.toLowerCase().includes(searchString)){
+							ustensil.style.display = "block";
 						} else {
-							ingredient.style.display = "none";
+							ustensil.style.display = "none";
 						}
 					});
 				}
@@ -99,7 +99,6 @@ export default class SearchButton {
 		});
 		const arrayUstensilsLw = arrayUstensils.flat().map((ustensil)=>ustensil.toLowerCase());
 		this.setUstensils = [...new Set(arrayUstensilsLw)];
-		console.log(this.setUstensils);
 	}
 
 	uniqueArrayAppliance() {
@@ -117,7 +116,6 @@ export default class SearchButton {
 		});
 		const arrayIngredientsLw = arrayIngredients.flat().map((ingredient)=>ingredient.toLowerCase());
 		this.setIngredients = [...new Set(arrayIngredientsLw)];
-		console.log(this.setIngredients);
 	}
 
 	renderResult(nameEN) {
