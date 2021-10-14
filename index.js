@@ -70,28 +70,22 @@ class Index {
 		document.addEventListener("click", (e) => {
 			if (e.target.dataset.trigger === "tag") {
 				e.target.remove();
-
-				const content = e.target.dataset.id;
-				const results = document.querySelectorAll(".searchButton__result");
-				results.forEach((result) => {
-					if (result.textContent === content) {
-						result.style.display = "block";
-					}
-				});
-				//if tag deleted, display back the corresponsing <li> result in the list of results
+				this.displayBackResult(e);
 			}
 			if (e.target.dataset.trigger === "tagDelete" || e.target.dataset.trigger === "tagContent") {
 				e.target.parentNode.remove();
+				this.displayBackResult(e);
+			}
+		});
+	}
 
-				const content = e.target.dataset.id;
-				const results = document.querySelectorAll(".searchButton__result");
-				results.forEach((result) => {
-					if (result.textContent === content) {
-						result.style.display = "block";
-					}
-				});
-				//if tag deleted, display back the corresponsing <li> result in the list of results
-
+	//if tag deleted, display back the corresponsing <li> result in the list of results
+	displayBackResult(e) {
+		const content = e.target.dataset.id;
+		const results = document.querySelectorAll(".searchButton__result");
+		results.forEach((result) => {
+			if (result.textContent === content) {
+				result.style.display = "block";
 			}
 		});
 	}
