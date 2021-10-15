@@ -98,35 +98,41 @@ class Index {
 	sortRecipeTag() {
 		this.filteredRecipes = this.recipes;
 		const tags = document.querySelectorAll(".tag");
-		console.log(tags);
 		tags.forEach((tag) => {
+			// if tag ingredient, filter all the recipes by this ingredient. return filteredRecipes filtered
 			if (tag.classList.contains("tag-ingredients")) {
-				console.log("blue");
 				const contentTag = tag.dataset.id;
 				this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
 					return recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(contentTag));
 				});
-				console.log(this.filteredRecipes);
 			}
+			// if tag appliance, filter all the recipes by this apliance. return filteredRecipes filtered
 			if (tag.classList.contains("tag-appliance")) {
-				console.log("green");
 				const contentTag = tag.dataset.id;
 				this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
 					return recipe.appliance.toLowerCase().includes(contentTag);
 				});
-				console.log(this.filteredRecipes);
 			}
+			// if tag ustensils, filter all the recipes by this ustensils. return filteredRecipes filtered
 			if (tag.classList.contains("tag-ustensils")) {
 				console.log("red");
 				const contentTag = tag.dataset.id;
 				this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
 					return recipe.ustensils.some((ustensil) => ustensil.toLowerCase().includes(contentTag));
 				});
-				console.log(this.filteredRecipes);
 			}
 		});
-		//this.displayRecipeCard(filteredRecipes);
-		//this.displayButtons(filteredRecipes);
+		// display new cards corresponding to the filter tags
+		this.displayRecipeCard(this.filteredRecipes);
+		// display message for "no result". remove message "no result" if results.
+		const messageContainer = document.querySelector(".messageContainer");
+		if (this.filteredRecipes.length == 0) {
+			messageContainer.innerHTML = `
+			<img src="./img/no_result.png" class="empty__image">
+			<span class="empty__message">Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.</span>`;
+		}else{
+			messageContainer.innerHTML = "";
+		}
 	}
 }
 
