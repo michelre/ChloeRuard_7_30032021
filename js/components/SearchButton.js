@@ -1,9 +1,9 @@
 export default class SearchButton {
 	constructor(data) {
 		this.data = data;
-		this.ustensils = data.ustensils;
-		this.appliance = data.appliance;
-		this.ingredients = data.ingredients;
+		// this.ustensils = data.ustensils;
+		// this.appliance = data.appliance;
+		// this.ingredients = data.ingredients;
 		this.uniqueArrayUstensil();
 		this.uniqueArrayAppliance();
 		this.uniqueArrayIngredient();
@@ -61,7 +61,7 @@ export default class SearchButton {
 	displayResults(element) {
 		const list = document.querySelectorAll(`.searchButton__result-${element}`);
 		list.forEach((result) => {
-			if (result.textContent.toLowerCase().includes(this.searchString)) {
+			if (result.textContent.toLowerCase().trim().includes(this.searchString)) {
 				result.style.display = "block";
 			} else {
 				result.style.display = "none";

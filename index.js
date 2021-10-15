@@ -56,8 +56,9 @@ class Index {
 		document.addEventListener("click", (e) => {
 			if (e.target.dataset.trigger === "result") {
 				const type = e.target.dataset.type;
-				const content = e.target.textContent;
+				const content = e.target.textContent.trim();
 				const tag = new Tag(type, content);
+				// type = define class, content = define data-id and content - see Tag.js
 				tagContainer.innerHTML += tag.render();
 				e.target.style.display = "none";
 				//if <li> clicked and transformed to tag, remove the <li> selected from the list of results (= a tag is unique)
@@ -68,47 +69,62 @@ class Index {
 
 	removeTag() {
 		document.addEventListener("click", (e) => {
+			//delete tag if click on the div containing icon and span (text)
 			if (e.target.dataset.trigger === "tag") {
 				e.target.remove();
 				this.displayBackResult(e);
+				this.sortRecipeTag();
 			}
+			//delete tag if click on icon and span (text)
 			if (e.target.dataset.trigger === "tagDelete" || e.target.dataset.trigger === "tagContent") {
 				e.target.parentNode.remove();
 				this.displayBackResult(e);
+				this.sortRecipeTag();
 			}
 		});
 	}
 
 	//if tag deleted, display back the corresponsing <li> result in the list of results
 	displayBackResult(e) {
-		const content = e.target.dataset.id;
+		const contentTag = e.target.dataset.id;
 		const results = document.querySelectorAll(".searchButton__result");
 		results.forEach((result) => {
-			if (result.textContent === content) {
+			if (result.textContent.trim() === contentTag) {
 				result.style.display = "block";
 			}
 		});
 	}
 
 	sortRecipeTag() {
-		const tagIngredients = [...document.querySelectorAll(".tag-ingredients")];
-		console.log(tagIngredients);
-		tagIngredients.forEach((tag) => {
-			console.log(tag.dataset.id);
+		this.filteredRecipes = this.recipes;
+		const tags = document.querySelectorAll(".tag");
+		console.log(tags);
+		tags.forEach((tag) => {
+			if (tag.classList.contains("tag-ingredients")) {
+				console.log("blue");
+				const contentTag = tag.dataset.id;
+				this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+					return recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(contentTag));
+				});
+				console.log(this.filteredRecipes);
+			}
+			if (tag.classList.contains("tag-appliance")) {
+				console.log("green");
+				const contentTag = tag.dataset.id;
+				this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+					return recipe.appliance.toLowerCase().includes(contentTag);
+				});
+				console.log(this.filteredRecipes);
+			}
+			if (tag.classList.contains("tag-ustensils")) {
+				console.log("red");
+				const contentTag = tag.dataset.id;
+				this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+					return recipe.ustensils.some((ustensil) => ustensil.toLowerCase().includes(contentTag));
+				});
+				console.log(this.filteredRecipes);
+			}
 		});
-		const tagAppliance = document.querySelectorAll(".tag-appliance");
-		tagAppliance.forEach((tag) => {
-			console.log(tag.dataset.id);
-		});
-		const tagUstensils = document.querySelectorAll(".tag-ustensils");
-		tagUstensils.forEach((tag) => {
-			console.log(tag.dataset.id);
-		});
-		//
-		//let filteredRecipes = this.recipes.filter((recipe)=>
-		// { recipe.
-		//
-		// })
 		//this.displayRecipeCard(filteredRecipes);
 		//this.displayButtons(filteredRecipes);
 	}
