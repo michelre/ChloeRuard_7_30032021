@@ -1,13 +1,4 @@
 export default class SearchButton {
-	constructor(data) {
-		this.data = data;
-		// this.ustensils = data.ustensils;
-		// this.appliance = data.appliance;
-		// this.ingredients = data.ingredients;
-		this.uniqueArrayUstensil();
-		this.uniqueArrayAppliance();
-		this.uniqueArrayIngredient();
-	}
 
 	//events handler
 
@@ -85,67 +76,7 @@ export default class SearchButton {
 		searchList.style.display = "none";
 	}
 
-	//create unique array from data
-
-	uniqueArrayUstensil() {
-		const arrayUstensils = this.data.map((recipe) => {
-			return recipe.ustensils;
-		});
-		const arrayUstensilsLw = arrayUstensils.flat().map((ustensil) => ustensil.toLowerCase());
-		return (this.setUstensils = [...new Set(arrayUstensilsLw)]);
-	}
-
-	uniqueArrayAppliance() {
-		const arrayAppliances = this.data.map((recipe) => {
-			return recipe.appliance.toLowerCase();
-		});
-		return (this.setAppliances = [...new Set(arrayAppliances)]);
-	}
-
-	uniqueArrayIngredient() {
-		const arrayIngredients = this.data.map((recipe) => {
-			return recipe.ingredients.map((ingredient) => {
-				return ingredient.ingredient;
-			});
-		});
-		const arrayIngredientsLw = arrayIngredients.flat().map((ingredient) => ingredient.toLowerCase());
-		return (this.setIngredients = [...new Set(arrayIngredientsLw)]);
-	}
-
 	//render
-
-	renderResult(nameEN) {
-		if (nameEN == "ingredients") {
-			return this.setIngredients
-				.map((ingredient) => {
-					return `
-					<li class="searchButton__result searchButton__result-${nameEN}" data-trigger="result" data-type="${nameEN}">
-						${ingredient}
-					</li>`;
-				})
-				.join("");
-		}
-		if (nameEN == "appliance") {
-			return this.setAppliances
-				.map((appliance) => {
-					return `
-					<li class="searchButton__result searchButton__result-${nameEN}" data-trigger="result" data-type="${nameEN}">
-						${appliance}
-					</li>`;
-				})
-				.join("");
-		}
-		if (nameEN == "ustensils") {
-			return this.setUstensils
-				.map((ustensil) => {
-					return `
-					<li class="searchButton__result searchButton__result-${nameEN}" data-trigger="result" data-type="${nameEN}">
-						${ustensil}
-					</li>`;
-				})
-				.join("");
-		}
-	}
 
 	render(name, nameEN) {
 		const nameLowerCase = name.toLowerCase().slice(0, -1);
@@ -160,7 +91,7 @@ export default class SearchButton {
 					<input type="search" class="searchButton__input" placeholder="Rechercher un ${nameLowerCase}" name="${nameEN}">
 					<img src="./img/arrow_icon.svg" class="searchButton__icon-Reverse" alt="" data-trigger="listIcon-${nameEN}">
 				</div>
-				<ul class="searchButton__results searchButton__results-${nameEN}">${this.renderResult(nameEN)}</ul>
+				<ul class="searchButton__results searchButton__results-${nameEN}"></ul>
 			</div>`;
 	}
 }
