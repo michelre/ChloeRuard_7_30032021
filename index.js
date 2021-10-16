@@ -1,11 +1,8 @@
-/*
-Créer un tag quand tape quelque chose dans la barre de recherche
-ATTENTION ! Tri des cartes: 2 algo à faire*/
-
 import Header from "./js/components/Header.js";
 import Search from "./js/components/Search.js";
 import RecipeCard from "./js/components/RecipeCard.js";
 import SearchButton from "./js/components/SearchButton.js";
+import SearchList from "./js/components/SearchList.js";
 import Tag from "./js/components/Tag.js";
 import recipes from "./recipes.js";
 
@@ -15,7 +12,8 @@ class Index {
 		this.displayHeader();
 		this.displaySearch();
 		this.displayRecipeCard(this.recipes);
-		this.displayButtons(this.recipes);
+		this.displayButtons();
+		this.displayList(this.recipes);
 		this.displayTag();
 		this.removeTag();
 	}
@@ -42,13 +40,23 @@ class Index {
 		cardsContainer.innerHTML = cards.join("");
 	}
 
-	displayButtons(recipes) {
+	displayButtons() {
 		const searchButtonContainer = document.querySelector(".searchButtonContainer");
 		const searchButton = new SearchButton(recipes);
 		searchButtonContainer.innerHTML += searchButton.render("Ingredients", "ingredients");
 		searchButtonContainer.innerHTML += searchButton.render("Appareil ", "appliance");
 		searchButtonContainer.innerHTML += searchButton.render("Ustensiles", "ustensils");
 		searchButton.workingSearchButton();
+	}
+
+	displayList(recipes) {
+		this.searchList = new SearchList(recipes);
+		const resultContainerI = document.querySelector(".searchButton__results-ingredients");
+		resultContainerI.innerHTML = this.searchList.render("ingredients");
+		const resultContainerA = document.querySelector(".searchButton__results-appliance");
+		resultContainerA.innerHTML = this.searchList.render("appliance");
+		const resultContainerU = document.querySelector(".searchButton__results-ustensils");
+		resultContainerU.innerHTML = this.searchList.render("ustensils");
 	}
 
 	displayTag() {
@@ -58,13 +66,17 @@ class Index {
 				const type = e.target.dataset.type;
 				const content = e.target.textContent.trim();
 				const tag = new Tag(type, content);
-				// type = define class, content = define data-id and content - see Tag.js
+				// type = define class, content = define data-id and content (see Tag.js)
 				tagContainer.innerHTML += tag.render();
-				e.target.style.display = "none";
-				//if <li> clicked and transformed to tag, remove the <li> selected from the list of results (= a tag is unique)
 				this.sortRecipeTag();
+				this.emptyInputs();
 			}
 		});
+	}
+
+	emptyInputs() {
+		const buttonInputs = document.querySelectorAll(".searchButton__input");
+		buttonInputs.forEach((input) => (input.value = ""));
 	}
 
 	removeTag() {
@@ -72,25 +84,12 @@ class Index {
 			//delete tag if click on the div containing icon and span (text)
 			if (e.target.dataset.trigger === "tag") {
 				e.target.remove();
-				this.displayBackResult(e);
 				this.sortRecipeTag();
 			}
 			//delete tag if click on icon and span (text)
 			if (e.target.dataset.trigger === "tagDelete" || e.target.dataset.trigger === "tagContent") {
 				e.target.parentNode.remove();
-				this.displayBackResult(e);
 				this.sortRecipeTag();
-			}
-		});
-	}
-
-	//if tag deleted, display back the corresponsing <li> result in the list of results
-	displayBackResult(e) {
-		const contentTag = e.target.dataset.id;
-		const results = document.querySelectorAll(".searchButton__result");
-		results.forEach((result) => {
-			if (result.textContent.trim() === contentTag) {
-				result.style.display = "block";
 			}
 		});
 	}
@@ -115,24 +114,39 @@ class Index {
 			}
 			// if tag ustensils, filter all the recipes by this ustensils. return filteredRecipes filtered
 			if (tag.classList.contains("tag-ustensils")) {
-				console.log("red");
 				const contentTag = tag.dataset.id;
 				this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
 					return recipe.ustensils.some((ustensil) => ustensil.toLowerCase().includes(contentTag));
 				});
 			}
 		});
-		// display new cards corresponding to the filter tags
+
 		this.displayRecipeCard(this.filteredRecipes);
+		this.displayList(this.filteredRecipes);
+		this.checkIfResultInTag();
 		// display message for "no result". remove message "no result" if results.
 		const messageContainer = document.querySelector(".messageContainer");
 		if (this.filteredRecipes.length == 0) {
 			messageContainer.innerHTML = `
 			<img src="./img/no_result.png" class="empty__image">
 			<span class="empty__message">Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.</span>`;
-		}else{
+		} else {
 			messageContainer.innerHTML = "";
 		}
+	}
+
+	//if <li> clicked and transformed to tag, remove the <li> selected from the list of results (= a tag is unique)
+	checkIfResultInTag() {
+		const tags = [...document.querySelectorAll(".tag")];
+		const tagsArray = tags.map((tag) => {
+			return tag.textContent.trim();
+		});
+		const results = document.querySelectorAll(".searchButton__result");
+		results.forEach((result) => {
+			if (tagsArray.includes(result.textContent.trim())) {
+				result.classList.add("tagged");
+			}
+		});
 	}
 }
 
