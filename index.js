@@ -9,6 +9,10 @@ import recipes from "./recipes.js";
 class Index {
 	constructor() {
 		this.recipes = recipes;
+		this.query = '';
+		this.tagIngredients = [];
+		this.tagApplicance = [];
+		this.tagUstensils = [];
 		this.displayHeader();
 		this.displaySearch();
 		this.displayRecipeCard(this.recipes);
@@ -26,8 +30,9 @@ class Index {
 
 	displaySearch() {
 		const searchContainer = document.querySelector(".searchContainer");
-		const search = new Search();
+		const search = new Search(this.searchBarAction.bind(this));
 		searchContainer.innerHTML += search.render();
+		search.createEvents()
 	}
 
 	displayRecipeCard(recipes) {
@@ -84,14 +89,61 @@ class Index {
 			//delete tag if click on the div containing icon and span (text)
 			if (e.target.dataset.trigger === "tag") {
 				e.target.remove();
-				this.sortRecipeTag();
+				//this.sortRecipeTag();
+				if(e.target.classList.contains('tag-ingredients')){
+					this.tagIngredients = this.tagIngredients.filter(i => i !== e.target.dataset.id)
+				}
 			}
 			//delete tag if click on icon and span (text)
 			if (e.target.dataset.trigger === "tagDelete" || e.target.dataset.trigger === "tagContent") {
 				e.target.parentNode.remove();
-				this.sortRecipeTag();
+				//this.sortRecipeTag();
+			}
+			this.sort()
+		});
+	}
+
+	searchBarAction(query){
+		this.query = query;
+		this.sort()
+	}
+
+	sort(){
+		this.filteredRecipes = this.recipes;
+		this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+			if (recipe.name.toLowerCase().includes(this.query)) {
+				return recipe;
+			}
+			if (recipe.description.toLowerCase().includes(this.query)) {
+				return recipe;
+			}
+			if (recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(this.query))) {
+				return recipe;
 			}
 		});
+
+		this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+			if(this.tagIngredients.length === 0){
+				return true;
+			}
+			const recipeIngredients = recipe.ingredients.map(({ingredient}) => ingredient)
+			return recipeIngredients
+				.filter((ingredient) => this.tagIngredients.includes(ingredient.toLowerCase()))
+				.length > 0
+		});
+
+		/*this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+			return recipe.appliance.toLowerCase().includes(contentTag);
+		});
+
+		this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+			return recipe.appliance.toLowerCase().includes(contentTag);
+		});*/
+
+
+		this.displayRecipeCard(this.filteredRecipes);
+		this.displayList(this.filteredRecipes);
+		this.checkIfResultInTag();
 	}
 
 	sortRecipeTag() {
@@ -101,24 +153,29 @@ class Index {
 			// if tag ingredient, filter all the recipes by this ingredient. return filteredRecipes filtered
 			if (tag.classList.contains("tag-ingredients")) {
 				const contentTag = tag.dataset.id;
-				this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+				this.tagIngredients.push(contentTag.toLowerCase())
+				/*this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
 					return recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(contentTag));
-				});
+				});*/
 			}
 			// if tag appliance, filter all the recipes by this apliance. return filteredRecipes filtered
 			if (tag.classList.contains("tag-appliance")) {
 				const contentTag = tag.dataset.id;
-				this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+				this.tagApplicance.push(contentTag.toLowerCase())
+				/*this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
 					return recipe.appliance.toLowerCase().includes(contentTag);
-				});
+				});*/
 			}
 			// if tag ustensils, filter all the recipes by this ustensils. return filteredRecipes filtered
 			if (tag.classList.contains("tag-ustensils")) {
 				const contentTag = tag.dataset.id;
-				this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+				this.tagUstensils.push(contentTag.toLowerCase())
+				/*this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
 					return recipe.ustensils.some((ustensil) => ustensil.toLowerCase().includes(contentTag));
-				});
+				});*/
 			}
+
+			this.sort()
 		});
 
 		this.displayRecipeCard(this.filteredRecipes);
